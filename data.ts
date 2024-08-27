@@ -3,6 +3,7 @@ import shouldImg from '@/public/shame-and-sadness.jpg';
 import prayerImg from '@/public/prayer.jpg';
 import scriptureImg from '@/public/scripture.jpg';
 import gal220Img from '@/public/gal220.jpg';
+import halloweenImg from '@/public/halloween.png';
 
 export interface IPost {
   id: number;
@@ -52,5 +53,14 @@ export const Posts: IPost[] = [
     creationDate: 'Oct 31, 2024',
     creationTime: '10:13 am',
     tag: 'Biblical Literacy',
+  },
+  {
+    id: 5,
+    title: 'Halloween',
+    subtitle: 'An opportunity to glorify His name with generosity and humility',
+    img: halloweenImg,
+    creationDate: 'Oct 24, 2024',
+    creationTime: '11:10 am',
+    tag: 'Culture',
   },
 ];

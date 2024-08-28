@@ -1,22 +1,21 @@
-import { db } from '@/db';
 import PostLinkCard from './PostLinkCard';
 import { Posts } from '@/data';
+import PostLinkCardStatic from './PostLinkCardStatic';
 
 
-const PostLinkGrid = async () => {
-  // const posts = Posts;
-  const posts = await db.query.postsTable.findMany();
+const PostLinkGridStatic = async () => {
+  const posts = Posts;
 
   return (
     <div className="grid grid-cols-3 gap-10">
       {posts.map((post) => (
-        <PostLinkCard
+        <PostLinkCardStatic
           key={post.id}
-          {...post}
+          post={post}
         />
       ))}
     </div>
   );
 };
 
-export default PostLinkGrid;
+export default PostLinkGridStatic;

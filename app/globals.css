@@ -31,3 +31,17 @@ body {
     text-wrap: balance;
   }
 } */
+
+input {
+  @apply focus:outline-none;
+}
+
+@layer components {
+  .btn-primary {
+    @apply p-2 px-3 rounded-sm bg-amber-300 font-bold text-sm hover:bg-amber-400/80 active:shadow-inner active:bg-amber-400;
+  }
+
+  .text-input {
+    @apply focus:outline-none border focus:border-sky-300 focus:shadow-sm focus:shadow-sky-200;
+  }
+}

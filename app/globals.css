@@ -32,7 +32,7 @@ body {
   }
 } */
 
-input {
+input, textarea {
   @apply focus:outline-none;
 }
 

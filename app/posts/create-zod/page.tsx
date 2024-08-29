@@ -1,5 +1,5 @@
 import React from "react";
-import { Form } from "react-hook-form";
+import Form from "@/components/form/Form";
 
 const CreatePostsZodPage = () => {
   return (

@@ -1,9 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { Playfair_Display } from 'next/font/google';
+import { playfair_dp } from '../playfairDisplay';
 import { SelectPost } from '@/db/schema';
-
-const playfair_dp = Playfair_Display({ subsets: ['latin'] });
 
 const PostLinkCard = (post: SelectPost) => {
   return (

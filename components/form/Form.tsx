@@ -1,6 +1,6 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { FormData, PostSchema } from '@/zod/types';
 import { zodResolver } from '@hookform/resolvers/zod';
 import FormField from './FormField';
@@ -11,7 +11,7 @@ import {
   useQueryClient,
   QueryClient,
 } from '@tanstack/react-query';
-import { getPosts, insertPost } from '@/db/query';
+import { getPosts, insertPost, useInsertPostMutation } from '@/db/query';
 
 const Form = () => {
   const {
@@ -23,24 +23,24 @@ const Form = () => {
     resolver: zodResolver(PostSchema),
   });
 
-  // Access to the client
-  const queryClient = useQueryClient();
+  // const { mutateAsync, isPending } = useInsertPostMutation();
 
-  // const query = useQuery({ queryKey: ['posts'], queryFn: getPosts })
-
-  // const mutation = useMutation({
-  //   mutationFn: insertPost,
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries({ queryKey: ['posts'] });
-  //   },
-  // });
-
-  const onSubmit = (data: FormData) => {
+  const onSubmit = async (data: FormData) => {
     // Handle form submission
-    console.log('DATA: ', data);
-    alert('Form validated successfully');
+    console.log('VALIDATED DATA: ', data);
+    // alert('Form validated successfully');
 
-    // mutation.mutate()
+    // try {
+    //   await mutateAsync({
+    //     title: data.title,
+    //     subtitle: data.subtitle,
+    //     category: data.category,
+    //     content: data.content,
+    //     userId: 1,
+    //   });
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
 
   return (

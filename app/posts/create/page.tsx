@@ -1,16 +1,19 @@
 import { db } from "@/db";
 import { postsTable } from "@/db/schema";
-import { playfair_dp } from "@/components/playfairDisplay";
+import { Playfair_Display } from "next/font/google";
 
-const CreatePostsPage = () => {
+const playfair_dp = Playfair_Display({ subsets: ["latin"] });
+
+const CreatePostsPage = async () => {
   const onSubmit = async () => {
     "use server";
+
     await db.insert(postsTable).values({
-      title: "Should and Should Not",
-      subtitle:
-        "How unrealistic expectations inhibit our God-given individuality",
-      category: "Emotional Health",
-      content: "The body of the post",
+      title: "Prayer as Intimacy",
+      subtitle: 'Jesus opens the Lord\'s prayer with "Our Father"',
+      category: "Spiritual Formation",
+      content:
+        "Christian prayer is more than just presenting petitions; it is a profound connection with God that transcends mere requests. Through prayer, believers enter into a relationship with God, sharing not only their needs but also their hearts, thoughts, and emotions. It is a time of communion, where one can listen for God's voice and experience His presence in a deeply personal way. This connection transforms prayer from a simple act of asking into a dynamic conversation that nurtures the soul and strengthens the believer's faith.",
       userId: 1,
     });
   };
@@ -18,21 +21,7 @@ const CreatePostsPage = () => {
   return (
     <>
       <h2 className='text-xl font-bold mb-6'>New Post</h2>
-      <form
-        action={async () => {
-          "use server";
-
-          await db.insert(postsTable).values({
-            title: "Should and Should Not",
-            subtitle:
-              "How unrealistic expectations inhibit our God-given individuality",
-            category: "Emotional Health",
-            content: "The body of the post",
-            userId: 1,
-          });
-        }}
-        className='flex flex-col'
-      >
+      <form action={onSubmit} className='flex flex-col'>
         <input
           type='text'
           placeholder='Title'

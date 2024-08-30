@@ -1,7 +1,10 @@
 import PostLinkGrid from '@/components/ui/PostLinkGrid';
 import PostLinkGridStatic from '@/components/ui/PostLinkGridStatic';
+import { db } from '@/db';
 
-export default function Home() {
+export default async function Home() {
+  const posts = await db.query.postsTable.findMany();
+
   return (
     <main className="min-h-screen">
       <div className="flex flex-col justify-center items-center p-32 pb-20 bg-amber-100">
@@ -24,7 +27,7 @@ export default function Home() {
       </div>
       <hr className="w-full mb-12" />
       <div className="flex justify-center mx-auto">
-        <PostLinkGrid />
+        <PostLinkGrid posts={posts} />
         {/* <PostLinkGridStatic /> */}
       </div>
     </main>

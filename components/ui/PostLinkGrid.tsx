@@ -1,8 +1,14 @@
 import { db } from '@/db';
 import PostLinkCard from './PostLinkCard';
+import { SelectPost } from '@/db/schema';
 
-const PostLinkGrid = async () => {
-  const posts = await db.query.postsTable.findMany();
+interface IPostLinkGrid {
+  posts: SelectPost[]
+}
+
+const PostLinkGrid = ({ posts }: IPostLinkGrid) => {
+  // const posts = await db.query.postsTable.findMany();
+  // const posts = data;
 
   return (
     <div className="grid grid-cols-3 gap-10">

@@ -1,5 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
-import { PostSchema } from "@/zod/types";
+import { NextRequest, NextResponse } from 'next/server';
+import { PostSchema } from '@/zod/types';
+import { insertPost } from '@/db/query';
 
 export async function POST(req: NextRequest) {
   const parsed = PostSchema.safeParse(await req.json());
@@ -13,5 +14,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  return NextResponse.json(parsed);
+  const post = await insertPost(parsed.data);
+
+  return NextResponse.json(post[0]);
 }

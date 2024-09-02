@@ -1,6 +1,6 @@
-import { FormData } from '@/zod/types';
-import { db } from './index';
-import { postsTable } from './schema';
+import { FormData } from "@/zod/types";
+import { db } from "./index";
+import { postsTable } from "./schema";
 
 export const insertPost = async (data: FormData) => {
   const post = await db
@@ -15,6 +15,10 @@ export const insertPost = async (data: FormData) => {
     .returning();
 
   return post;
+};
+
+export const updatePost = async (data: FormData) => {
+  // const post = await db.update(postsTable).set()
 };
 
 export const getPosts = async () => {

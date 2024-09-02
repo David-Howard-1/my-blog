@@ -8,8 +8,13 @@ import { playfair_dp } from "../playfairDisplay";
 import { useInsertPostMutation } from "@/app/hooks/useInsertPostMutation";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { FC } from "react";
 
-const Form = () => {
+type FormProps = {
+  postId?: number;
+};
+
+const Form: FC<FormProps> = ({ postId }) => {
   const router = useRouter();
 
   const {

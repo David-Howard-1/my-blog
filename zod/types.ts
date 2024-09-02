@@ -6,6 +6,7 @@ export type FormData = {
   subtitle: string;
   category: string;
   content: string;
+  isDraft: number | null;
 };
 
 export type FormFieldProps = {
@@ -34,4 +35,5 @@ export const PostSchema: ZodType<FormData> = z.object({
     .min(1, { message: "Required" })
     .max(20, { message: "Must be 20 characters or less" }),
   content: z.string().min(1, { message: "Required" }),
+  isDraft: z.number().int().nullable(),
 });

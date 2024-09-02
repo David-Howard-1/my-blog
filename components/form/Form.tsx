@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { useForm } from 'react-hook-form';
-import { FormData, PostSchema } from '@/zod/types';
-import { zodResolver } from '@hookform/resolvers/zod';
-import FormField from './FormField';
-import { playfair_dp } from '../playfairDisplay';
-import { useInsertPostMutation } from '@/app/hooks/useInsertPostMutation';
-import toast from 'react-hot-toast';
-import { useRouter } from 'next/navigation';
+import { useForm } from "react-hook-form";
+import { FormData, PostSchema } from "@/zod/types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import FormField from "./FormField";
+import { playfair_dp } from "../playfairDisplay";
+import { useInsertPostMutation } from "@/app/hooks/useInsertPostMutation";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const Form = () => {
   const router = useRouter();
@@ -25,7 +25,7 @@ const Form = () => {
 
   const onSubmit = async (data: FormData) => {
     // Handle form submission
-    console.log('VALIDATED DATA: ', data);
+    console.log("VALIDATED DATA: ", data);
 
     const res = await toast.promise(
       mutateAsync({
@@ -36,9 +36,9 @@ const Form = () => {
         userId: 1,
       }),
       {
-        loading: 'Submitting Post...',
-        success: 'Post submitted successfully!',
-        error: 'Unable to submit Post',
+        loading: "Submitting Post...",
+        success: "Post submitted successfully!",
+        error: "Unable to submit Post",
       }
     );
 
@@ -49,49 +49,59 @@ const Form = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-col space-y-3 max-w-xl">
-        <div>isPending: {JSON.stringify(isPending)}</div>
-        <h2 className="font-bold text-2xl">New Post</h2>
+      <div className='flex flex-col space-y-3 max-w-xl'>
+        {/* <div>isPending: {JSON.stringify(isPending)}</div> */}
+        <h2 className='font-bold text-2xl'>New Post</h2>
         <FormField
-          name="title"
-          placeholder="Title"
-          type="text"
+          name='title'
+          placeholder='Title'
+          type='text'
           register={register}
           error={errors.title}
+          noStyle
           className={`${playfair_dp.className} text-4xl`}
         />
 
         <FormField
-          name="subtitle"
-          placeholder="Subtitle"
-          type="text"
+          name='subtitle'
+          placeholder='Subtitle'
+          type='text'
           register={register}
           error={errors.subtitle}
-          className="font-semibold"
+          noStyle
+          className='font-semibold'
         />
 
         <FormField
-          name="category"
-          placeholder="Category"
-          type="text"
+          name='category'
+          placeholder='Category'
+          type='text'
           register={register}
           error={errors.category}
         />
 
         <FormField
           textarea
-          name="content"
-          placeholder="Write your post here..."
-          type="text"
+          name='content'
+          placeholder='Write your post here...'
+          type='text'
           register={register}
           error={errors.content}
         />
-        <button
-          type="submit"
-          className="py-2 px-4 max-w-40 ml-auto text-white bg-amber-600 rounded-md hover:outline outline-amber-400 hover:outline-1 outline-offset-1 active:shadow-inner active:bg-amber-700/80 active:outline-offset-0"
-        >
-          Submit
-        </button>
+        <div className='space-x-2 ml-auto'>
+          <button
+            type='submit'
+            className='py-2 px-4 max-w-40 ml-auto text-amber-600  rounded-md hover:outline outline-amber-600 hover:outline-1 outline-offset-1 active:shadow-inner active:bg-amber-700/10 active:outline-offset-0'
+          >
+            Save as Draft
+          </button>
+          <button
+            type='submit'
+            className='py-2 px-4 max-w-40 ml-auto text-white bg-amber-600 rounded-md hover:outline outline-amber-400 hover:outline-1 outline-offset-1 active:shadow-inner active:bg-amber-700/80 active:outline-offset-0'
+          >
+            Submit
+          </button>
+        </div>
       </div>
     </form>
   );

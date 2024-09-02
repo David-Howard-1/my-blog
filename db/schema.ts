@@ -1,4 +1,5 @@
 import { sql } from "drizzle-orm";
+import { boolean } from "drizzle-orm/mysql-core";
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const usersTable = sqliteTable("users", {
@@ -15,6 +16,7 @@ export const postsTable = sqliteTable("posts", {
   subtitle: text("subtitle").notNull(),
   category: text("category").notNull(),
   content: text("content").notNull(),
+  isDraft: integer("draft_boolean"),
   userId: integer("user_id")
     .notNull()
     .references(() => usersTable.id, { onDelete: "cascade" }),

@@ -1,8 +1,7 @@
-import React, { FC } from "react";
-import { db } from "@/db";
-import { postsTable, usersTable } from "@/db/schema";
-import { eq } from "drizzle-orm";
-import { playfair_dp } from "@/components/playfairDisplay";
+import { db } from '@/db';
+import { postsTable, usersTable } from '@/db/schema';
+import { eq } from 'drizzle-orm';
+import { playfair_dp } from '@/components/playfairDisplay';
 
 type PostPageProps = {
   params: {
@@ -10,7 +9,7 @@ type PostPageProps = {
   };
 };
 
-const PostPage: FC<PostPageProps> = async ({ params }) => {
+const PostPage = async ({ params }: PostPageProps) => {
   // Convert the params.id to a number for db selection
   const id = Number(params.id);
 
@@ -31,21 +30,21 @@ const PostPage: FC<PostPageProps> = async ({ params }) => {
 
   return (
     <div>
-      <div className='p-20'>
+      <div className="p-20">
         <h2
           className={`${playfair_dp.className} text-7xl font-bold text-center mb-8`}
         >
           {post.title}
         </h2>
-        <div className='flex text-sm justify-center items-center mb-5 uppercase'>
+        <div className="flex text-sm justify-center items-center mb-5 uppercase">
           <p>
-            {post.createdAt} by{" "}
-            <p className='inline'>
+            {post.createdAt} by{' '}
+            <p className="inline">
               {author.firstname} {author.lastname}
             </p>
           </p>
         </div>
-        <h3 className='text-2xl text-center'>{post.subtitle}</h3>
+        <h3 className="text-2xl text-center">{post.subtitle}</h3>
       </div>
     </div>
   );

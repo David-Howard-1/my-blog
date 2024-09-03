@@ -15,8 +15,8 @@ export function useUpdatePostMutation() {
 
       if (res.status === 200) {
         type TPost = {
-            id: number
-        }
+          id: number;
+        };
         const payload = (await res.json()) as TPost;
         console.log(payload);
 
@@ -24,7 +24,7 @@ export function useUpdatePostMutation() {
       } else if (res.status === 404) {
         throw new Error('API Route not found');
       } else {
-        throw new Error('Failed to insert post');
+        throw new Error('Failed to update post');
       }
     } catch (error) {
       console.error(error);

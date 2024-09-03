@@ -5,6 +5,7 @@ import { SelectPost } from '@/db/schema';
 import { db } from '@/db';
 
 export async function GET(req: NextRequest) {
+  console.log(req.json());
   const postId = Number(req.nextUrl.pathname.split('/').pop());
 
   if (isNaN(postId)) {

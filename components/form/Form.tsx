@@ -27,7 +27,7 @@ const Form: FC<FormProps> = ({ params: id }) => {
   // Set the initial form data if updating an existing post
   const getInitialFormData = async () => {
     const res = await fetch(`api/posts/${String(postId)}`);
-    console.log(res);
+    console.log('API GET POST FETCH: ', res.json());
 
     if (!res.ok) {
       throw new Error('Failed to fetch post');

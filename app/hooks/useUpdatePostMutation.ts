@@ -1,17 +1,17 @@
-import { PostSchema } from '@/zod/types';
 import { InsertPost } from '@/db/schema';
 import { useMutation } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
-import { z } from 'zod';
 
 export function useUpdatePostMutation() {
   async function mutationFn(data: InsertPost) {
     try {
-      const res = await fetch('/api/posts', {
+      const res = await fetch(`/api/posts?id=${String(data.id)}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
+
+      console.log(res.json());
 
       if (res.status === 200) {
         type TPost = {

@@ -8,10 +8,11 @@ import { playfair_dp } from '@/lib/playfairDisplay';
 import { useInsertPostMutation } from '@/app/hooks/useInsertPostMutation';
 import toast from 'react-hot-toast';
 import { useParams, useRouter } from 'next/navigation';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { useUpdatePostMutation } from '@/app/hooks/useUpdatePostMutation';
 import { useState } from 'react';
 import { usePostQuery } from '@/app/hooks/usePostQuery';
+import { SelectPost } from '@/db/schema';
 
 type FormProps = {
   params?: {
@@ -19,36 +20,58 @@ type FormProps = {
   };
 };
 
-const Form: FC<FormProps> = ({ params: id }) => {
-  const [intialFormData, setInitialFormData] = useState({});
+const Form: FC<FormProps> = () => {
+  /**
+   * Hooks
+   */
   const router = useRouter();
-  const postId = useParams();
+  const params = useParams();
+
+  const [initialFormData, setInitialFormData] = useState<FormData>();
+
+  const postId = params?.id;
+
   console.log('URL Params:', postId);
 
   // Set the initial form data if updating an existing post
-  // const getInitialFormData = async () => {
-  //   const res = await fetch(`/api/posts`);
-  //   console.log('API GET POST FETCH: ', res.json());
+  useEffect(() => {
+    if (postId) {
+      const fetchPostToUpdate = async () => {
+        let res = await fetch(`/api/posts?id=${postId}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
 
-  //   if (!res.ok) {
-  //     throw new Error('Failed to fetch post');
-  //   }
+        let post: SelectPost = await res.json();
+        setInitialFormData({
+          title: post.title,
+          subtitle: post.subtitle,
+          category: post.category,
+          content: post.content,
+        });
+      };
 
-  //   return res.json();
-  // };
-
-  // if (postId) {
-  //   getInitialFormData();
-  // }
+      fetchPostToUpdate();
+    }
+  }, [postId]);
+  console.log('Initial form data:', initialFormData);
 
   // React Hook Form useForm hook
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isLoading },
     setError,
   } = useForm<FormData>({
     resolver: zodResolver(PostSchema),
+    values: {
+      title: initialFormData?.title || '',
+      subtitle: initialFormData?.subtitle || '',
+      category: initialFormData?.category || '',
+      content: initialFormData?.content || '',
+    },
   });
 
   const { mutateAsync, isPending } = useInsertPostMutation();
@@ -145,7 +168,7 @@ const Form: FC<FormProps> = ({ params: id }) => {
           type="submit"
           className="py-2 px-4 max-w-40 ml-auto text-white bg-amber-600 rounded-md hover:outline outline-amber-400 hover:outline-1 outline-offset-1 active:shadow-inner active:bg-amber-700/80 active:outline-offset-0"
         >
-          Submit
+          {!postId ? 'Submit' : 'Save Changes'}
         </button>
       </div>
       {/* </div> */}

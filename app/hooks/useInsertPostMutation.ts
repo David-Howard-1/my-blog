@@ -1,13 +1,13 @@
-import { InsertPost } from "@/db/schema";
-import { useMutation } from "@tanstack/react-query";
-import toast from "react-hot-toast";
+import { InsertPost } from '@/db/schema';
+import { useMutation } from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 
 export function useInsertPostMutation() {
   async function mutationFn(data: InsertPost) {
     try {
-      const res = await fetch("/api/posts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const res = await fetch('/api/posts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
 
@@ -20,9 +20,9 @@ export function useInsertPostMutation() {
 
         return payload;
       } else if (res.status === 404) {
-        throw new Error("API Route not found");
+        throw new Error('API Route not found');
       } else {
-        throw new Error("Failed to insert post");
+        throw new Error('Failed to insert post');
       }
     } catch (error) {
       console.error(error);
@@ -35,7 +35,7 @@ export function useInsertPostMutation() {
       if (error instanceof Error) {
         return toast.error(error.message);
       }
-      toast.error("Something went wrong");
+      toast.error('Something went wrong');
     },
   });
 }

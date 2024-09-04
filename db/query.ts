@@ -28,7 +28,7 @@ export const updatePost = async (data: FormData, id: number) => {
 };
 
 export const getPosts = async () => {
-  await db.query.postsTable.findMany();
+  return await db.query.postsTable.findMany();
 };
 
 export const getPost = async (id: number) => {

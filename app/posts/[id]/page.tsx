@@ -1,7 +1,7 @@
 import { db } from '@/db';
 import { postsTable, usersTable } from '@/db/schema';
 import { eq } from 'drizzle-orm';
-import { playfair_dp } from '@/components/playfairDisplay';
+import { playfair_dp } from '@/lib/playfairDisplay';
 
 type PostPageProps = {
   params: {

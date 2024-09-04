@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { playfair_dp } from '../playfairDisplay';
+import { playfair_dp } from '../../lib/playfairDisplay';
 import { SelectPost } from '@/db/schema';
 import { Edit01Icon } from 'hugeicons-react';
 

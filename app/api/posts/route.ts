@@ -1,21 +1,29 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { PostSchema } from '@/zod/types';
-import { getPost, insertPost, updatePost } from '@/db/query';
-import { SelectPost } from '@/db/schema';
-import { db } from '@/db';
+import { NextRequest, NextResponse } from "next/server";
+import { PostSchema } from "@/zod/types";
+import { getPost, insertPost, updatePost } from "@/db/query";
+import { SelectPost } from "@/db/schema";
+import { db } from "@/db";
+
+type getPostSchema = {
+  id: number;
+};
 
 export async function GET(req: NextRequest) {
-  console.log(req.json());
-  const postId = Number(req.nextUrl.pathname.split('/').pop());
+  const data: getPostSchema = await req.json();
 
-  if (isNaN(postId)) {
-    return NextResponse.json({ error: 'Invalid post id' }, { status: 400 });
+  const postId = data.id;
+
+  if (!postId) {
+    return NextResponse.json(
+      { error: "Post ID Not Provided" },
+      { status: 400 }
+    );
   }
 
   const post = await getPost(postId);
 
   if (!post) {
-    return NextResponse.json({ error: 'Post not found' }, { status: 404 });
+    return NextResponse.json({ error: "Post not found" }, { status: 404 });
   }
 
   return NextResponse.json(post);
@@ -47,7 +55,7 @@ export async function PUT(req: NextRequest) {
   if (!id) {
     return NextResponse.json(
       {
-        error: 'Post ID Not Provided',
+        error: "Post ID Not Provided",
       },
       { status: 400 }
     );

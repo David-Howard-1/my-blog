@@ -1,15 +1,15 @@
-import { SelectPost } from '@/db/schema';
-import { useQuery } from '@tanstack/react-query';
+import { SelectPost } from "@/db/schema";
+import { useQuery } from "@tanstack/react-query";
 
 export function usePostQuery() {
-  async function queryFn(id: number) {
+  async function queryFn(data: SelectPost) {
     try {
       const res = await fetch(`api/posts`, {
-        method: 'GET',
+        method: "GET",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(id),
+        body: JSON.stringify(data),
       });
 
       return res.json();
@@ -18,7 +18,8 @@ export function usePostQuery() {
     }
   }
 
-//   return useQuery({
-//     queryFn: queryFn,
-//   });
+  // return useQuery({
+  //   queryFn: queryFn,
+  //   queryKey: ["posts"],
+  // });
 }

@@ -5,9 +5,9 @@ type ValidFormFieldNames = 'title' | 'subtitle' | 'category' | 'content';
 type FormFieldProps = {
   type?: string;
   name: ValidFormFieldNames;
-  value: string;
+  value?: string;
   placeholder: string;
-  onChange: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  onChange?: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   className: string;
   textarea?: boolean;
 };

@@ -45,6 +45,9 @@ const PostPage = async ({ params }: PostPageProps) => {
           </p>
         </div>
         <h3 className="text-2xl text-center">{post.subtitle}</h3>
+        <div>
+          <p className="text-sm">{post.content}</p>
+        </div>
       </div>
     </div>
   );

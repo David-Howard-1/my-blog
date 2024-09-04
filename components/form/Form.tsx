@@ -7,10 +7,11 @@ import FormField from './FormField';
 import { playfair_dp } from '@/lib/playfairDisplay';
 import { useInsertPostMutation } from '@/app/hooks/useInsertPostMutation';
 import toast from 'react-hot-toast';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { FC } from 'react';
 import { useUpdatePostMutation } from '@/app/hooks/useUpdatePostMutation';
 import { useState } from 'react';
+import { usePostQuery } from '@/app/hooks/usePostQuery';
 
 type FormProps = {
   params?: {
@@ -21,24 +22,24 @@ type FormProps = {
 const Form: FC<FormProps> = ({ params: id }) => {
   const [intialFormData, setInitialFormData] = useState({});
   const router = useRouter();
-
-  const postId = id;
+  const postId = useParams();
+  console.log('URL Params:', postId);
 
   // Set the initial form data if updating an existing post
-  const getInitialFormData = async () => {
-    const res = await fetch(`api/posts/${String(postId)}`);
-    console.log('API GET POST FETCH: ', res.json());
+  // const getInitialFormData = async () => {
+  //   const res = await fetch(`/api/posts`);
+  //   console.log('API GET POST FETCH: ', res.json());
 
-    if (!res.ok) {
-      throw new Error('Failed to fetch post');
-    }
+  //   if (!res.ok) {
+  //     throw new Error('Failed to fetch post');
+  //   }
 
-    return res.json();
-  };
+  //   return res.json();
+  // };
 
-  if (postId) {
-    getInitialFormData();
-  }
+  // if (postId) {
+  //   getInitialFormData();
+  // }
 
   // React Hook Form useForm hook
   const {

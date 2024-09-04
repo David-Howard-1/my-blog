@@ -1,17 +1,13 @@
+import ClientSideForm from '@/components/form-no-zod/ClientSideForm';
 import Form from '@/components/form-no-zod/Form';
-import { db } from '@/db';
-import { postsTable } from '@/db/schema';
-import { Playfair_Display } from 'next/font/google';
+import { Toaster } from 'react-hot-toast';
 
-const playfair_dp = Playfair_Display({ subsets: ['latin'] });
-
-const CreatePostsPage = async () => {
-  
-
+const CreatePostsPage = () => {
   return (
     <>
       <h2 className="text-xl font-bold mb-6">New Post</h2>
       <Form />
+      {/* <ClientSideForm /> */}
     </>
   );
 };

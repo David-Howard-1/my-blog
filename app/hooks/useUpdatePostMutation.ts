@@ -4,6 +4,7 @@ import toast from 'react-hot-toast';
 
 export function useUpdatePostMutation() {
   async function mutationFn(data: InsertPost) {
+    console.log(data.id);
     try {
       const res = await fetch(`/api/posts?id=${String(data.id)}`, {
         method: 'PUT',

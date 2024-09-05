@@ -5,7 +5,11 @@ const PostsLayout = ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
-  return <main className="flex flex-col w-full min-h-screen p-10">{children}</main>;
+  return (
+    <main className="flex flex-col w-full min-h-screen p-4 sm:p-10">
+      {children}
+    </main>
+  );
 };
 
 export default PostsLayout;

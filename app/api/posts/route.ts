@@ -5,6 +5,7 @@ import { InsertPost, postsTable, SelectPost } from '@/db/schema';
 import { db } from '@/db';
 import { FormDataTypes } from '@/components/form-no-zod/Form';
 import { error } from 'console';
+import { eq } from 'drizzle-orm';
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
@@ -75,7 +76,27 @@ export async function PUT(req: NextRequest) {
     );
   }
 
-  const updatedPost = await updatePost(parsed.data, Number(id));
+  const result = await updatePost(parsed.data, Number(id));
 
-  return NextResponse.json(updatedPost);
+  return NextResponse.json(result);
+}
+
+export async function DELETE(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const id = searchParams.get('id');
+
+  if (!id) {
+    return NextResponse.json(
+      {
+        error: 'Post id required for deletion',
+      },
+      { status: 400 }
+    );
+  }
+
+  const result = await db
+    .delete(postsTable)
+    .where(eq(postsTable.id, Number(id)));
+
+  return NextResponse.json(result);
 }

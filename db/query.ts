@@ -1,7 +1,7 @@
-import { FormData } from "@/zod/types";
-import { db } from "./index";
-import { postsTable } from "./schema";
-import { eq } from "drizzle-orm";
+import { FormData } from '@/zod/types';
+import { db } from './index';
+import { postsTable } from './schema';
+import { eq } from 'drizzle-orm';
 
 export const insertPost = async (data: FormData) => {
   const post = await db
@@ -19,12 +19,7 @@ export const insertPost = async (data: FormData) => {
 };
 
 export const updatePost = async (data: FormData, id: number) => {
-  const post = await db
-    .update(postsTable)
-    .set(data)
-    .where(eq(postsTable.id, id));
-
-  return post;
+  return await db.update(postsTable).set(data).where(eq(postsTable.id, id));
 };
 
 export const getPosts = async () => {

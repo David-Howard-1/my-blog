@@ -1,26 +1,27 @@
-import Link from "next/link";
+import Link from 'next/link';
+import { ArrowDown01Icon } from 'hugeicons-react';
 
 const Navbar = () => {
   return (
-    <nav>
-      <div className='flex space-x-6 text-sm p-2 pl-4 font-bold bg-amber-100'>
-        <Link href='/' className='hover:text-amber-600 transition-colors'>
+    <nav className="p-3 pl-5 bg-amber-100 top-0 sticky">
+      <div className="flex space-x-6 text font-bold">
+        <Link href="/" className="hover:text-amber-600 transition-colors">
           Home
         </Link>
-        <Link href='/posts' className='hover:text-amber-600 transition-colors'>
+        <Link href="/posts" className="hover:text-amber-600 transition-colors">
           Posts
         </Link>
         <Link
-          href='/posts/create'
-          className='hover:text-amber-600 transition-colors'
+          href="/about"
+          className="hover:text-amber-600 transition-colors flex items-center"
         >
-          New Post
+          About <ArrowDown01Icon size={20} type={'standard'} className="ml-2" />
         </Link>
         <Link
-          href='/posts/create-zod'
-          className='hover:text-amber-600 transition-colors'
+          href="/posts/create"
+          className="hover:text-amber-600 transition-colors"
         >
-          New Post (Zod)
+          New Post
         </Link>
       </div>
     </nav>

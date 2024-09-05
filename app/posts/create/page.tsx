@@ -1,15 +1,12 @@
-import ClientSideForm from '@/components/form-no-zod/ClientSideForm';
-import Form from '@/components/form-no-zod/Form';
-import { Toaster } from 'react-hot-toast';
+import React from "react";
+import Form from "@/components/form/Form";
 
-const CreatePostsPage = () => {
+const CreatePostsZodPage = () => {
   return (
-    <>
-      <h2 className="text-xl font-bold mb-6">New Post</h2>
+    <div>
       <Form />
-      {/* <ClientSideForm /> */}
-    </>
+    </div>
   );
 };
 
-export default CreatePostsPage;
+export default CreatePostsZodPage;

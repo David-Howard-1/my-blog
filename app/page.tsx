@@ -1,11 +1,31 @@
 import Header from '@/components/layout/Header';
+import RefreshCache from '@/components/RefreshCache';
 import PostLinkGrid from '@/components/ui/PostLinkGrid';
 import PostLinkGridStatic from '@/components/ui/PostLinkGridStatic';
 import ToolTip from '@/components/ui/ToolTip';
 import { db } from '@/db';
+import { revalidatePath } from 'next/cache';
 
 export default async function Home() {
   const posts = await db.query.postsTable.findMany();
+
+  const postsLength = posts.length;
+  console.log('Posts array Length:', postsLength);
+
+  const checkPostsChange = async () => {
+    'use server';
+
+    const checkPosts = await db.query.postsTable.findMany();
+    const checkPostsLength = checkPosts.length;
+    console.log('CHECK Posts array Length:', checkPostsLength);
+
+    const didChange = postsLength !== checkPostsLength;
+    console.log('didChange?', didChange);
+
+    if (didChange) {
+      revalidatePath('/');
+    }
+  };
 
   const sortedPosts = posts.sort((a, b) => {
     return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf();
@@ -13,6 +33,7 @@ export default async function Home() {
 
   return (
     <main className="min-h-screen">
+      {/* <RefreshCache check={checkPostsChange} /> */}
       {/* <h1 className="font-bold tracking-tight text-8xl mb-5">
           Journey with Jesus
         </h1> */}

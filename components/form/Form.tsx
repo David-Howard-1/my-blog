@@ -114,9 +114,14 @@ const Form: FC<FormProps> = () => {
     );
 
     if (res?.id) {
+      console.log('Replacing URL...');
       router.replace(`/posts/${res.id}`);
     } else if (postId) {
+      console.log('Replacing URL...');
       router.replace(`/posts/${postId}`);
+
+      console.log('Refreshing for new data...');
+      router.refresh();
     }
   };
 
@@ -169,9 +174,12 @@ const Form: FC<FormProps> = () => {
             Save as Draft
           </button> */}
         <button
-          disabled={insertIsPending || updateIsPending}
           type="submit"
-          className="py-2 px-4 max-w-40 ml-auto text-white font-semibold bg-amber-600 rounded-md hover:outline outline-amber-400 hover:outline-1 outline-offset-1 active:shadow-inner active:bg-amber-700/80 active:outline-offset-0 disabled:bg-gray-100 disabled:text-gray-600"
+          className={`py-2 px-4 max-w-40 ml-auto text-white font-semibold ${
+            insertIsPending || updateIsPending
+              ? 'bg-gray-100 text-gray-600'
+              : 'bg-amber-600 rounded-md hover:outline outline-amber-400 hover:outline-1 outline-offset-1 active:shadow-inner active:bg-amber-700/80 active:outline-offset-0'
+          } `}
         >
           {!postId ? 'Submit' : 'Save Changes'}
         </button>

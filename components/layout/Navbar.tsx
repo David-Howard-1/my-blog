@@ -8,9 +8,6 @@ const Navbar = () => {
         <Link href="/" className="hover:text-amber-600 transition-colors">
           Home
         </Link>
-        <Link href="/posts" className="hover:text-amber-600 transition-colors">
-          Posts
-        </Link>
         <Link
           href="/about"
           className="hover:text-amber-600 transition-colors flex items-center"

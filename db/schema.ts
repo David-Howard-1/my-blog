@@ -15,7 +15,7 @@ export const postsTable = sqliteTable("posts", {
   subtitle: text("subtitle").notNull(),
   category: text("category").notNull(),
   content: text("content").notNull(),
-  coverPhoto: blob("coverPhoto"),
+  coverPhoto: blob("cover_photo"),
   isDraft: integer("draft_boolean"),
   userId: integer("user_id")
     .notNull()

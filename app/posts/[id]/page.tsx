@@ -1,7 +1,12 @@
-import { db } from '@/db';
-import { postsTable, usersTable } from '@/db/schema';
-import { eq } from 'drizzle-orm';
-import { playfair_dp } from '@/lib/playfairDisplay';
+import { db } from "@/db";
+import { postsTable, usersTable } from "@/db/schema";
+import { eq } from "drizzle-orm";
+import { playfair_dp } from "@/lib/playfairDisplay";
+import { Noto_Serif_Georgian } from "next/font/google";
+import dayjs from "dayjs";
+import { formatDate } from "@/app/utils/formatDate";
+
+const noto_serif_georgian = Noto_Serif_Georgian({ subsets: ["latin"] });
 
 type PostPageProps = {
   params: {
@@ -28,26 +33,37 @@ const PostPage = async ({ params }: PostPageProps) => {
 
   const author = authorArray[0];
 
+  const dayjsDate = dayjs(post.createdAt);
+  const formattedDate = dayjsDate.format("M/D/YYYY");
+  console.log(
+    "Dayjs Formatted Date:",
+    formattedDate,
+    "; Type:",
+    typeof formattedDate
+  );
+
   return (
     <div>
-      <div className="p-20">
+      <div className='p-20'>
         <h2
           className={`${playfair_dp.className} text-7xl font-bold text-center mb-8`}
         >
           {post.title}
         </h2>
-        <div className="flex text-sm justify-center items-center mb-5 uppercase">
+        <div className='flex text-sm justify-center items-center mb-5 uppercase'>
           <p>
-            {post.createdAt} by{' '}
-            <p className="inline">
+            {formatDate({ date: post.createdAt })} by{" "}
+            <p className='inline'>
               {author.firstname} {author.lastname}
             </p>
           </p>
         </div>
-        <h3 className="text-2xl text-center">{post.subtitle}</h3>
-        <div>
-          <p className="text-sm">{post.content}</p>
-        </div>
+        <h3 className='text-2xl text-center mb-10'>{post.subtitle}</h3>
+        <section className='mx-auto max-w-4xl'>
+          <p className={`${noto_serif_georgian.className} leading-7 indent-10`}>
+            {post.content}
+          </p>
+        </section>
       </div>
     </div>
   );

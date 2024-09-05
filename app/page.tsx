@@ -1,3 +1,4 @@
+import Header from '@/components/layout/Header';
 import PostLinkGrid from '@/components/ui/PostLinkGrid';
 import PostLinkGridStatic from '@/components/ui/PostLinkGridStatic';
 import ToolTip from '@/components/ui/ToolTip';
@@ -6,9 +7,16 @@ import { db } from '@/db';
 export default async function Home() {
   const posts = await db.query.postsTable.findMany();
 
+  const sortedPosts = posts.sort((a, b) => {
+    return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf();
+  });
+
   return (
     <main className="min-h-screen">
-      <div className="flex flex-col justify-center items-center p-32 pb-20 bg-amber-100">
+      {/* <h1 className="font-bold tracking-tight text-8xl mb-5">
+          Journey with Jesus
+        </h1> */}
+      <Header className="border-b">
         <h1 className="font-bold tracking-tight text-8xl mb-5">
           Journey with Jesus
         </h1>
@@ -29,11 +37,9 @@ export default async function Home() {
             </button>
           </ToolTip>
         </form>
-      </div>
-      <hr className="w-full mb-12" />
+      </Header>
       <div className="flex justify-center mx-auto">
-        <PostLinkGrid posts={posts} />
-        {/* <PostLinkGridStatic /> */}
+        <PostLinkGrid posts={sortedPosts} />
       </div>
     </main>
   );

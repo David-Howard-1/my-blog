@@ -24,8 +24,8 @@ const PostLinkCard = (post: SelectPost) => {
           {post.title}
         </h3>
         <h4 className="mb-4">{post.subtitle}</h4>
-        <p className="text-xs text-stone-600">
-          {formatDate({ date: post.createdAt, format: 'M/D/YYYY h:mm a' })}
+        <p className="text-xs text-stone-600 uppercase">
+          {formatDate({ date: post.createdAt, format: 'MMM D, YYYY' })}
         </p>
       </Link>
     </div>

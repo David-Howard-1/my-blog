@@ -87,20 +87,22 @@ const Form: FC<FormProps> = () => {
 
     const res = await toast.promise(
       !postId
-        ? insertMutateAsync({
+        ? // With no postId, insert a posts record using the form data
+          insertMutateAsync({
             title: data.title,
             subtitle: data.subtitle,
             category: data.category,
             content: data.content,
-            userId: 1,
+            userId: 1, // ! Change this value when authentication is built
           })
-        : updateMutateAsync({
+        : // With a postId, update the existing posts record using the form data
+          updateMutateAsync({
             id: Number(postId),
             title: data.title,
             subtitle: data.subtitle,
             category: data.category,
             content: data.content,
-            userId: 1,
+            userId: 1, // ! Change this value when authentication is built
           }),
       {
         loading: !postId ? 'Submitting Post...' : 'Updating Post...',
@@ -122,7 +124,7 @@ const Form: FC<FormProps> = () => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col space-y-3 max-w-xl">
         {/* <div>isPending: {JSON.stringify(isPending)}</div> */}
-        <h2 className="font-bold text-2xl">New Post</h2>
+        <h2 className="text-xl">{postId ? 'Update Post' : 'New Post'}</h2>
         <FormField
           name="title"
           placeholder="Title"
@@ -167,8 +169,9 @@ const Form: FC<FormProps> = () => {
             Save as Draft
           </button> */}
         <button
+          disabled={insertIsPending || updateIsPending}
           type="submit"
-          className="py-2 px-4 max-w-40 ml-auto text-white bg-amber-600 rounded-md hover:outline outline-amber-400 hover:outline-1 outline-offset-1 active:shadow-inner active:bg-amber-700/80 active:outline-offset-0"
+          className="py-2 px-4 max-w-40 ml-auto text-white font-semibold bg-amber-600 rounded-md hover:outline outline-amber-400 hover:outline-1 outline-offset-1 active:shadow-inner active:bg-amber-700/80 active:outline-offset-0 disabled:bg-gray-100 disabled:text-gray-600"
         >
           {!postId ? 'Submit' : 'Save Changes'}
         </button>

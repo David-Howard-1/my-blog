@@ -1,7 +1,7 @@
-import React from "react";
-import Form from "@/components/form/Form";
+import React from 'react';
+import Form from '@/components/form/Form';
 
-const CreatePostsZodPage = () => {
+const CreatePostsPage = () => {
   return (
     <div>
       <Form />
@@ -9,4 +9,4 @@ const CreatePostsZodPage = () => {
   );
 };
 
-export default CreatePostsZodPage;
+export default CreatePostsPage;

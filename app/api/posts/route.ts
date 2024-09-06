@@ -3,8 +3,6 @@ import { PostSchema } from '@/zod/types';
 import { getPost, getPosts, insertPost, updatePost } from '@/db/query';
 import { InsertPost, postsTable, SelectPost } from '@/db/schema';
 import { db } from '@/db';
-import { FormDataTypes } from '@/components/form-no-zod/Form';
-import { error } from 'console';
 import { eq } from 'drizzle-orm';
 
 export async function GET(req: NextRequest) {

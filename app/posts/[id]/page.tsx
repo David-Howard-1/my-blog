@@ -20,15 +20,13 @@ const PostPage = async ({ params }: PostPageProps) => {
     where: eq(postsTable.id, id),
   });
 
-  const author =
-    post &&
-    (await db.query.usersTable.findFirst({
-      where: eq(usersTable.id, post.id),
-    }));
-
   if (!post) {
     return <div>Loading post...</div>;
   }
+
+  const author = await db.query.usersTable.findFirst({
+    where: eq(usersTable.id, post.id),
+  });
 
   return (
     <>

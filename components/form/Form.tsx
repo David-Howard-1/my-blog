@@ -12,6 +12,7 @@ import { FC, useEffect } from "react";
 import { useUpdatePostMutation } from "@/app/hooks/useUpdatePostMutation";
 import { useState } from "react";
 import { SelectPost } from "@/db/schema";
+import { BiBold, BiItalic, BiUnderline } from "react-icons/bi";
 
 type FormProps = {
   params?: {
@@ -73,8 +74,6 @@ const Form: FC<FormProps> = () => {
     },
   });
 
-  const { mutateAsync, isPending } = useInsertPostMutation();
-
   const insertMutateAsync = useInsertPostMutation().mutateAsync;
   const insertIsPending = useInsertPostMutation().isPending;
 
@@ -127,17 +126,17 @@ const Form: FC<FormProps> = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className='flex flex-col space-y-3 max-w-xl'>
+      <div className='flex flex-col space-y-2'>
         {/* <div>isPending: {JSON.stringify(isPending)}</div> */}
         <h2 className='text-xl'>{postId ? "Update Post" : "New Post"}</h2>
+
         <FormField
           name='title'
           placeholder='Title'
           type='text'
           register={register}
           error={errors.title}
-          noStyle
-          className={`${playfair_dp.className} text-4xl`}
+          className={`max-w-2xl`}
         />
 
         <FormField
@@ -146,8 +145,7 @@ const Form: FC<FormProps> = () => {
           type='text'
           register={register}
           error={errors.subtitle}
-          noStyle
-          className='font-semibold'
+          className='max-w-2xl'
         />
 
         <FormField
@@ -156,16 +154,43 @@ const Form: FC<FormProps> = () => {
           type='text'
           register={register}
           error={errors.category}
+          className='max-w-2xl'
         />
 
-        <FormField
-          textarea
-          name='content'
-          placeholder='Write your post here...'
-          type='number'
-          register={register}
-          error={errors.content}
-        />
+        <div className='max-w-6xl'>
+          <div className='border border-b-0 rounded-md rounded-b-none p-1 px-2.5 flex justify-start space-x-2 items-center'>
+            <BiBold
+              size={20}
+              className='hover:text-black/70 active:text-black/50 cursor-pointer'
+            />
+            <BiItalic
+              size={20}
+              className='hover:text-black/70 active:text-black/50 cursor-pointer'
+            />
+            <BiUnderline
+              size={20}
+              className='hover:text-black/70 active:text-black/50 cursor-pointer'
+            />
+            <span className='font-bold px-1 hover:text-black/70 active:text-black/50 cursor-pointer text-2xl text-center'>
+              Heading
+            </span>
+            <span className='font-bold px-1 hover:text-black/70 active:text-black/50 text-lg cursor-pointer text-center'>
+              Subheading
+            </span>
+            <span className='font-semibold px-1 hover:text-black/70 active:text-black/50 cursor-pointer text-center'>
+              Normal
+            </span>
+          </div>
+          <FormField
+            textarea
+            name='content'
+            placeholder='Write your post here...'
+            type='number'
+            register={register}
+            error={errors.content}
+            className='rounded-t-none'
+          />
+        </div>
         {/* <div className='space-x-2 ml-auto'>
           <button
             type='submit'

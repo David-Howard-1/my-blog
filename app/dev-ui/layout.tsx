@@ -1,15 +1,15 @@
 import React from 'react';
 
-const PostsLayout = ({
+const DevUILayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
   return (
-    <main className="flex flex-col w-full min-h-screen p-4 sm:p-10">
+    <main className="w-full min-h-screen p-4 sm:p-10">
       {children}
     </main>
   );
 };
 
-export default PostsLayout;
+export default DevUILayout;

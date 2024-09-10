@@ -1,18 +1,17 @@
-"use client";
+'use client';
 
-import { useForm } from "react-hook-form";
-import { PostFormData, PostSchema } from "@/zod/types";
-import { zodResolver } from "@hookform/resolvers/zod";
-import FormField from "./FormField";
-import { playfair_dp } from "@/lib/playfairDisplay";
-import { useInsertPostMutation } from "@/app/hooks/useInsertPostMutation";
-import toast from "react-hot-toast";
-import { useParams, useRouter } from "next/navigation";
-import { FC, useEffect } from "react";
-import { useUpdatePostMutation } from "@/app/hooks/useUpdatePostMutation";
-import { useState } from "react";
-import { SelectPost } from "@/db/schema";
-import { BiBold, BiItalic, BiUnderline } from "react-icons/bi";
+import { FC, useEffect, useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { PostFormData, PostSchema } from '@/zod/types';
+import { zodResolver } from '@hookform/resolvers/zod';
+import FormField from './FormField';
+import { useInsertPostMutation } from '@/app/hooks/useInsertPostMutation';
+import toast from 'react-hot-toast';
+import { useParams, useRouter } from 'next/navigation';
+import { useUpdatePostMutation } from '@/app/hooks/useUpdatePostMutation';
+import { SelectPost } from '@/db/schema';
+import { noto_serif } from '@/lib/notoSerif';
+import FormatBar from './FormatBar';
 
 type FormProps = {
   params?: {
@@ -26,21 +25,21 @@ const Form: FC<FormProps> = () => {
    */
   const router = useRouter();
   const params = useParams();
-
   const [initialFormData, setInitialFormData] = useState<PostFormData>();
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const postId = params?.id;
 
-  console.log("URL Params:", postId);
+  console.log('URL Params:', postId);
 
   // Set the initial form data if updating an existing post
   useEffect(() => {
     if (postId) {
       const fetchPostToUpdate = async () => {
         let res = await fetch(`/api/posts?id=${postId}`, {
-          method: "GET",
+          method: 'GET',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
         });
 
@@ -56,7 +55,7 @@ const Form: FC<FormProps> = () => {
       fetchPostToUpdate();
     }
   }, [postId]);
-  console.log("Initial form data:", initialFormData);
+  console.log('Initial form data:', initialFormData);
 
   // React Hook Form useForm hook
   const {
@@ -67,10 +66,10 @@ const Form: FC<FormProps> = () => {
   } = useForm<PostFormData>({
     resolver: zodResolver(PostSchema),
     values: {
-      title: initialFormData?.title || "",
-      subtitle: initialFormData?.subtitle || "",
-      category: initialFormData?.category || "",
-      content: initialFormData?.content || "",
+      title: initialFormData?.title || '',
+      subtitle: initialFormData?.subtitle || '',
+      category: initialFormData?.category || '',
+      content: initialFormData?.content || '',
     },
   });
 
@@ -82,7 +81,7 @@ const Form: FC<FormProps> = () => {
 
   const onSubmit = async (data: PostFormData) => {
     // Handle form submission
-    console.log("VALIDATED DATA: ", data);
+    console.log('VALIDATED DATA: ', data);
 
     const res = await toast.promise(
       !postId
@@ -104,91 +103,99 @@ const Form: FC<FormProps> = () => {
             userId: 1, // ! Change this value when authentication is built
           }),
       {
-        loading: !postId ? "Submitting Post..." : "Updating Post...",
+        loading: !postId ? 'Submitting Post...' : 'Updating Post...',
         success: !postId
-          ? "Post submitted successfully!"
-          : "Post updated successfully!",
-        error: !postId ? "Unable to submit Post" : "Unable to update Post",
+          ? 'Post submitted successfully!'
+          : 'Post updated successfully!',
+        error: !postId ? 'Unable to submit Post' : 'Unable to update Post',
       }
     );
 
     if (res?.id) {
-      console.log("Replacing URL...");
+      console.log('Replacing URL...');
       router.replace(`/posts/${res.id}`);
     } else if (postId) {
-      console.log("Replacing URL...");
+      console.log('Replacing URL...');
       router.replace(`/posts/${postId}`);
 
-      console.log("Refreshing for new data...");
+      console.log('Refreshing for new data...');
       router.refresh();
     }
   };
 
+  const highlightLogger = () => {
+    console.log('Highlight finished...');
+
+    const textarea = textareaRef.current;
+
+    if (textarea) {
+      // Get the selected text from the textarea element/input
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      const selectedText = textarea.value.substring(start, end);
+
+      // Check if anything is selected
+      if (selectedText) {
+        console.log('Highlighted Text: ' + selectedText);
+      }
+    } else {
+      console.log('Highlighted text not captured');
+    }
+
+    // const selectedText = window.getSelection()?.toString();
+
+    // if (selectedText) {
+    //   console.log('Highlighted Text:', selectedText);
+    // } else {
+    //   console.log('No highlighted text captured');
+    // }
+  };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className='flex flex-col space-y-2'>
+      <div className="flex flex-col space-y-2">
         {/* <div>isPending: {JSON.stringify(isPending)}</div> */}
-        <h2 className='text-xl'>{postId ? "Update Post" : "New Post"}</h2>
+        <h2 className="text-xl">{postId ? 'Update Post' : 'New Post'}</h2>
 
         <FormField
-          name='title'
-          placeholder='Title'
-          type='text'
+          name="title"
+          placeholder="Title"
+          type="text"
           register={register}
           error={errors.title}
-          className={`max-w-2xl`}
+          className="max-w-2xl"
         />
 
         <FormField
-          name='subtitle'
-          placeholder='Subtitle'
-          type='text'
+          name="subtitle"
+          placeholder="Subtitle"
+          type="text"
           register={register}
           error={errors.subtitle}
-          className='max-w-2xl'
+          className="max-w-2xl"
         />
 
         <FormField
-          name='category'
-          placeholder='Category'
-          type='text'
+          name="category"
+          placeholder="Category"
+          type="text"
           register={register}
           error={errors.category}
-          className='max-w-2xl'
+          className="max-w-2xl"
         />
 
-        <div className='max-w-6xl'>
-          <div className='border border-b-0 rounded-md rounded-b-none p-1 px-2.5 flex justify-start space-x-2 items-center'>
-            <BiBold
-              size={20}
-              className='hover:text-black/70 active:text-black/50 cursor-pointer'
-            />
-            <BiItalic
-              size={20}
-              className='hover:text-black/70 active:text-black/50 cursor-pointer'
-            />
-            <BiUnderline
-              size={20}
-              className='hover:text-black/70 active:text-black/50 cursor-pointer'
-            />
-            <span className='font-bold px-1 hover:text-black/70 active:text-black/50 cursor-pointer text-2xl text-center'>
-              Heading
-            </span>
-            <span className='font-bold px-1 hover:text-black/70 active:text-black/50 text-lg cursor-pointer text-center'>
-              Subheading
-            </span>
-            <span className='font-semibold px-1 hover:text-black/70 active:text-black/50 cursor-pointer text-center'>
-              Normal
-            </span>
-          </div>
+        <div className="max-w-6xl">
+          <FormatBar />
+
           <FormField
             textarea
-            name='content'
-            placeholder='Write your post here...'
-            type='number'
+            onSelect={highlightLogger}
+            name="content"
+            placeholder="Write your post here..."
+            type="number"
             register={register}
             error={errors.content}
-            className='rounded-t-none'
+            className={`${noto_serif.className} rounded-t-none`}
           />
         </div>
         {/* <div className='space-x-2 ml-auto'>
@@ -199,14 +206,14 @@ const Form: FC<FormProps> = () => {
             Save as Draft
           </button> */}
         <button
-          type='submit'
+          type="submit"
           className={`py-2 px-4 max-w-40 ml-auto text-white font-semibold ${
             insertIsPending || updateIsPending
-              ? "bg-gray-100 text-gray-600"
-              : "bg-amber-600 rounded-md hover:outline outline-amber-400 hover:outline-1 outline-offset-1 active:shadow-inner active:bg-amber-700/80 active:outline-offset-0"
+              ? 'bg-gray-100 text-gray-600'
+              : 'bg-amber-600 rounded-md hover:outline outline-amber-400 hover:outline-1 outline-offset-1 active:shadow-inner active:bg-amber-700/80 active:outline-offset-0'
           } `}
         >
-          {!postId ? "Submit" : "Save Changes"}
+          {!postId ? 'Submit' : 'Save Changes'}
         </button>
       </div>
       {/* </div> */}

@@ -3,8 +3,10 @@ import { postsTable, SelectPost, SelectUser, usersTable } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { playfair_dp } from "@/lib/playfairDisplay";
 import { formatDate } from "@/app/utils/formatDate";
-import Link from "next/link";
 import { noto_serif } from "@/lib/notoSerif";
+import ButtonLink from "@/components/ui/ButtonLink";
+import Button from "@/components/ui/Button";
+import { useRouter } from "next/router";
 
 type PostPageProps = {
   params: {
@@ -25,18 +27,37 @@ const PostPage = async ({ params }: PostPageProps) => {
   }
 
   const author = await db.query.usersTable.findFirst({
-    where: eq(usersTable.id, post.id),
+    where: eq(usersTable.id, post.userId),
   });
 
   return (
     <>
       {author?.id === 1 ? (
-        <Link
-          href={`/posts/${post.id}/update`}
-          className='ml-auto px-2 p-1 rounded border border-amber-500 text-amber-500 text-sm min-w-20 text-center hover:bg-amber-500/10 active:bg-amber-500/20 active:shadow-inner'
-        >
-          Edit
-        </Link>
+        <div className='flex space-x-2'>
+          <ButtonLink
+            href={`/posts/${post.id}/update`}
+            className='ml-auto'
+            variant='info'
+          >
+            Edit
+          </ButtonLink>
+          <Button
+            className='ml-auto'
+            variant='danger'
+            onClick={async () => {
+              "use server";
+
+              await db
+                .delete(postsTable)
+                .where(eq(postsTable.id, post.id))
+                .execute();
+
+              console.log(`Post with ID ${post.id} has been deleted`);
+            }}
+          >
+            Delete
+          </Button>
+        </div>
       ) : null}
       <div className='md:p-16 flex flex-col'>
         <h1
@@ -46,8 +67,8 @@ const PostPage = async ({ params }: PostPageProps) => {
         </h1>
         {/* <h3 className="text-xl md:text-2xl text-center">{post.subtitle}</h3> */}
         <p className='text-stone-500 text-sm text-center mb-8'>
-          {formatDate({ date: post.createdAt, format: "MMMM D, YYYY" })} by{" "}
-          {author?.firstname} {author?.lastname}
+          {formatDate({ date: post.createdAt, format: "MMMM D, YYYY" })}
+          {author && ` by ${author.firstname} ${author.lastname}`}
         </p>
         <section className='mx-auto w-full max-w-3xl'>
           <p className={`${noto_serif.className} md:leading-7 text-xl`}>

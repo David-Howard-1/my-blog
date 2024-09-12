@@ -115,6 +115,9 @@ const Form: FC<FormProps> = () => {
     if (res?.id) {
       console.log("Replacing URL...");
       router.replace(`/posts/${res.id}`);
+
+      console.log("Refreshing for new data...");
+      router.refresh();
     } else if (postId) {
       console.log("Replacing URL...");
       router.replace(`/posts/${postId}`);
@@ -207,12 +210,10 @@ const Form: FC<FormProps> = () => {
             ) : null}
             <Button
               type='submit'
-              className={`${isSubmitting && "bg-gray-100 text-gray-600"}`}
+              className={`${isSubmitting && "bg-gray-200 text-stone-700"}`}
             >
               {!postId ? "Submit" : "Save Changes"}
             </Button>
-            <span>isLoading: {isLoading}</span>
-            <span>isSubmitting: {isSubmitting}</span>
           </div>
         </div>
       </div>

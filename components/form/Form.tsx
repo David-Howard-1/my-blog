@@ -1,18 +1,19 @@
-"use client";
+'use client';
 
-import { FC, useEffect, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
-import { PostFormData, PostSchema } from "@/zod/types";
-import { zodResolver } from "@hookform/resolvers/zod";
-import FormField from "./FormField";
-import { useInsertPostMutation } from "@/app/hooks/useInsertPostMutation";
-import toast from "react-hot-toast";
-import { useParams, useRouter } from "next/navigation";
-import { useUpdatePostMutation } from "@/app/hooks/useUpdatePostMutation";
-import { SelectPost } from "@/db/schema";
-import { noto_serif } from "@/lib/notoSerif";
-import FormatBar from "./FormatBar";
-import Button from "../ui/Button";
+import { FC, useEffect, useRef, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { PostFormData, PostSchema } from '@/zod/types';
+import { zodResolver } from '@hookform/resolvers/zod';
+import FormField from './FormField';
+import { useInsertPostMutation } from '@/app/hooks/useInsertPostMutation';
+import toast from 'react-hot-toast';
+import { useParams, useRouter } from 'next/navigation';
+import { useUpdatePostMutation } from '@/app/hooks/useUpdatePostMutation';
+import { SelectPost } from '@/db/schema';
+import { noto_serif } from '@/lib/notoSerif';
+import FormatBar from './FormatBar';
+import Button from '../ui/Button';
+import { revalidatePath } from 'next/cache';
 
 type FormProps = {
   params?: {
@@ -27,20 +28,21 @@ const Form: FC<FormProps> = () => {
   const router = useRouter();
   const params = useParams();
   const [initialFormData, setInitialFormData] = useState<PostFormData>();
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>();
+  const headerRef = useRef<HTMLHeadingElement>();
 
   const postId = params?.id;
 
-  console.log("URL Params:", postId);
+  console.log('URL Params:', postId);
 
   // Set the initial form data if updating an existing post
   useEffect(() => {
     if (postId) {
       const fetchPostToUpdate = async () => {
         let res = await fetch(`/api/posts?id=${postId}`, {
-          method: "GET",
+          method: 'GET',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
         });
 
@@ -56,7 +58,7 @@ const Form: FC<FormProps> = () => {
       fetchPostToUpdate();
     }
   }, [postId]);
-  console.log("Initial form data:", initialFormData);
+  console.log('Initial form data:', initialFormData);
 
   // React Hook Form useForm hook
   const {
@@ -67,10 +69,10 @@ const Form: FC<FormProps> = () => {
   } = useForm<PostFormData>({
     resolver: zodResolver(PostSchema),
     values: {
-      title: initialFormData?.title || "",
-      subtitle: initialFormData?.subtitle || "",
-      category: initialFormData?.category || "",
-      content: initialFormData?.content || "",
+      title: initialFormData?.title || '',
+      subtitle: initialFormData?.subtitle || '',
+      category: initialFormData?.category || '',
+      content: initialFormData?.content || '',
     },
   });
 
@@ -82,7 +84,7 @@ const Form: FC<FormProps> = () => {
 
   const onSubmit = async (data: PostFormData) => {
     // Handle form submission
-    console.log("VALIDATED DATA: ", data);
+    console.log('VALIDATED DATA: ', data);
 
     const res = await toast.promise(
       !postId
@@ -104,33 +106,36 @@ const Form: FC<FormProps> = () => {
             userId: 1, // ! Change this value when authentication is built
           }),
       {
-        loading: !postId ? "Submitting Post..." : "Updating Post...",
+        loading: !postId ? 'Submitting Post...' : 'Updating Post...',
         success: !postId
-          ? "Post submitted successfully!"
-          : "Post updated successfully!",
-        error: !postId ? "Unable to submit Post" : "Unable to update Post",
+          ? 'Post submitted successfully!'
+          : 'Post updated successfully!',
+        error: !postId ? 'Unable to submit Post' : 'Unable to update Post',
       }
     );
 
     if (res?.id) {
-      console.log("Replacing URL...");
+      console.log('Replacing URL...');
       router.replace(`/posts/${res.id}`);
 
-      console.log("Refreshing for new data...");
+      console.log('Revalidating for new data...');
       router.refresh();
+      // revalidatePath(`/posts/${res.id}`);
     } else if (postId) {
-      console.log("Replacing URL...");
+      console.log('Replacing URL...');
       router.replace(`/posts/${postId}`);
 
-      console.log("Refreshing for new data...");
-      router.refresh();
+      console.log('Revalidating for new data...');
+      // router.refresh();
+      revalidatePath(`/posts/${postId}`);
     }
   };
 
   const highlightLogger = () => {
-    console.log("Highlight finished...");
+    console.log('Highlight finished...');
 
     const textarea = textareaRef.current;
+    console.log('Highlighted text:', textarea);
 
     if (textarea) {
       // Get the selected text from the textarea element/input
@@ -140,10 +145,10 @@ const Form: FC<FormProps> = () => {
 
       // Check if anything is selected
       if (selectedText) {
-        console.log("Highlighted Text: " + selectedText);
+        console.log('Highlighted Text: ' + selectedText);
       }
     } else {
-      console.log("Highlighted text not captured");
+      console.log('Highlighted text not captured');
     }
 
     // const selectedText = window.getSelection()?.toString();
@@ -157,62 +162,62 @@ const Form: FC<FormProps> = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className='flex flex-col space-y-2'>
+      <div className="flex flex-col space-y-2">
         {/* <div>isPending: {JSON.stringify(isPending)}</div> */}
-        <h2 className='text-xl'>{postId ? "Update Post" : "New Post"}</h2>
+        <h2 className="text-xl">{postId ? 'Update Post' : 'New Post'}</h2>
 
         <FormField
-          name='title'
-          placeholder='Title'
-          type='text'
+          name="title"
+          placeholder="Title"
+          type="text"
           register={register}
           error={errors.title}
-          className='max-w-2xl'
+          className="max-w-2xl"
         />
 
         <FormField
-          name='subtitle'
-          placeholder='Subtitle'
-          type='text'
+          name="subtitle"
+          placeholder="Subtitle"
+          type="text"
           register={register}
           error={errors.subtitle}
-          className='max-w-2xl'
+          className="max-w-2xl"
         />
 
         <FormField
-          name='category'
-          placeholder='Category'
-          type='text'
+          name="category"
+          placeholder="Category"
+          type="text"
           register={register}
           error={errors.category}
-          className='max-w-2xl'
+          className="max-w-2xl"
         />
 
-        <div className='max-w-6xl flex flex-col'>
+        <div className="max-w-6xl flex flex-col">
           <FormatBar />
 
           <FormField
             textarea
-            onSelect={highlightLogger}
-            name='content'
-            placeholder='Write your post here...'
-            type='number'
+            onSelect={() => console.log(textareaRef.current)}
+            name="content"
+            placeholder="Write your post here..."
+            type="number"
             register={register}
             error={errors.content}
             className={`${noto_serif.className} rounded-t-none`}
           />
 
-          <div className='flex space-x-2 ml-auto items-center'>
+          <div className="flex space-x-2 ml-auto items-center">
             {!postId ? (
-              <Button className='' variant='info'>
+              <Button className="" variant="info">
                 Save as Draft
               </Button>
             ) : null}
             <Button
-              type='submit'
-              className={`${isSubmitting && "bg-gray-200 text-stone-700"}`}
+              type="submit"
+              className={`${isSubmitting && 'bg-gray-200 text-stone-700'}`}
             >
-              {!postId ? "Submit" : "Save Changes"}
+              {!postId ? 'Submit' : 'Save Changes'}
             </Button>
           </div>
         </div>

@@ -27,9 +27,13 @@ export default async function Home() {
     }
   };
 
+  // checkPostsChange();
+
   const sortedPosts = posts.sort((a, b) => {
     return new Date(b.createdAt).valueOf() - new Date(a.createdAt).valueOf();
   });
+
+  revalidatePath('/');
 
   return (
     <main className="min-h-screen">

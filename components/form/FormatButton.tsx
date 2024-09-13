@@ -17,6 +17,7 @@ const FormatButton: FC<Props> = ({
       type="button"
       onClick={onClick}
       className={`${className} ${isActive && 'bg-sky-200/50'} rounded-md p-1`}
+      tabIndex={-1}
     >
       <span
         className={`${

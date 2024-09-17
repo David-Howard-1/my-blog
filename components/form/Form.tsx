@@ -28,8 +28,6 @@ const Form: FC<FormProps> = () => {
   const router = useRouter();
   const params = useParams();
   const [initialFormData, setInitialFormData] = useState<PostFormData>();
-  const textareaRef = useRef<HTMLTextAreaElement>();
-  const headerRef = useRef<HTMLHeadingElement>();
 
   const postId = params?.id;
 
@@ -131,35 +129,6 @@ const Form: FC<FormProps> = () => {
     }
   };
 
-  const highlightLogger = () => {
-    console.log('Highlight finished...');
-
-    const textarea = textareaRef.current;
-    console.log('Highlighted text:', textarea);
-
-    if (textarea) {
-      // Get the selected text from the textarea element/input
-      const start = textarea.selectionStart;
-      const end = textarea.selectionEnd;
-      const selectedText = textarea.value.substring(start, end);
-
-      // Check if anything is selected
-      if (selectedText) {
-        console.log('Highlighted Text: ' + selectedText);
-      }
-    } else {
-      console.log('Highlighted text not captured');
-    }
-
-    // const selectedText = window.getSelection()?.toString();
-
-    // if (selectedText) {
-    //   console.log('Highlighted Text:', selectedText);
-    // } else {
-    //   console.log('No highlighted text captured');
-    // }
-  };
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col space-y-2">
@@ -198,7 +167,6 @@ const Form: FC<FormProps> = () => {
 
           <FormField
             textarea
-            onSelect={() => console.log(textareaRef.current)}
             name="content"
             placeholder="Write your post here..."
             type="number"
